@@ -1,4 +1,3 @@
-#include "main.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
@@ -10,8 +9,7 @@
 int _printf(const char *format, ...)
 {
 	va_list f_store;
-	int i = 0;
-	int num_store = 0;
+	int i = 0, num_store = 0;
 
 	va_start(f_store, format);
 	while (format[i] != '\0')
