@@ -1,67 +1,75 @@
-#include <stdarg.h>
 #include <stdio.h>
-#include <string.h>
+#include <stdarg.h>
 /**
- * _printf - A function that produces output according to format
- * @format: The format string
- * Return: The number of characters printed
+ * print_char - function to print a character
+ * @s: character to print
+ * @num_tally: pointer to the character count
+ */
+void print_char(char s, int *num_tally)
+{
+        putchar(s);
+        (*num_tally)++;
+}
+/**
+ * print_str - function to print a string
+ * @str: String to print
+ * @num_tally: pointer to the character count
+ */
+void print_str(const char *str, int *num_tally)
+{
+        int i = 0;
+
+        while (str[i] != '\0')
+        {
+                putchar(str[i]);
+                (*num_tally)++;
+                i++;
+        }
+}
+/**
+ * _printf - a function that produces output according to format
+ * @format: string
+ * Return: characters to be printed
  */
 int _printf(const char *format, ...)
 {
-	va_list f_store;
-	int i = 0, num_store = 0;
+        va_list f_store;
 
-	va_start(f_store, format);
-	while (format[i] != '\0')
-	{
-		if (format[i] != '%')
-		{
-			putchar(format[i]);
-			num_store++;
-		}
-		else
-		{
-			i++; /* Move past the '%'*/
-			if (format[i] == 'c')
-			{
-				char c = va_arg(f_store, int); /* Fetch the character*/
+        int val_tally = 0, a = 0;
 
-				putchar(c);
-				num_store++;
-			}
-			else if (format[i] == 's')
-			{
-				char *str = va_arg(f_store, char *); /* Fetch the string*/
+        va_start(f_store, format);
+        while (format[a] != '\0')
+        {
+                if (format[a] != '%')
+                {
+                        print_char(format[a], &val_tally);
+                }
+                else
+                {
+                        a++;
+                        if (format[a] == 'c')
+                        {
+                                char c = va_arg(f_store, int);
 
-				printf("%s", str);
-				num_store += strlen(str);
-			}
-			else if (format[i] == '%')
-			{
-				putchar('%');
-				num_store++;
-			}
-			else
-			{
-				putchar('%');
-				putchar(format[i]);
-				num_store += 2;
-			}
-		}
-		i++; /* Move to the next character in the format string*/
-	}
-	va_end(f_store);
-	return num_store;
-}
-/**
- * main - checks the printf function
- * Return: 0 (Success)
- */
-int main(void)
-{
-	int check;
+                                print_char(c, &val_tally);
+                        }
+                        else if (format[a] == 's')
+                        {
+                                char *str = va_arg(f_store, char *);
 
-	check = _printf("Our first complex code\n");
-	printf("Character count: %d\n", check);
-	return (0);
+                                print_str(str, &val_tally);
+                        }
+                        else if (format[a] == '%')
+                        {
+                                print_char('%', &val_tally);
+                        }
+                        else
+                        {
+                                print_char('%', &val_tally);
+                                print_char(format[a], &val_tally);
+                        }
+                } a++;
+        }
+        va_end(f_store);
+        return (val_tally);
 }
